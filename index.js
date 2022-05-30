@@ -6,6 +6,7 @@ import countriesRouter from './routes/countriesRouter.js';
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(express.json());
 app.use('/api/countries', countriesRouter);
 app.use('*', (req, res) => res.sendStatus(404));
 app.use(errorHandler);
