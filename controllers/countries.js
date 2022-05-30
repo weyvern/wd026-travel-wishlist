@@ -16,7 +16,16 @@ export const createCountry = asyncHandler(async (req, res) => {
   res.status(201).json(newCountry);
 });
 
-export const getSingleCountry = (req, res) => res.send('GET single country');
+export const getSingleCountry = asyncHandler(async (req, res) => {
+  const {
+    params: { code }
+  } = req;
+  const country = await Country.findOne({
+    $or: [{ alpha2Code: code.toUpperCase() }, { alpha3Code: code.toUpperCase() }]
+  });
+  if (!country) throw new ErrorResponse(`Country with code of ${code} doesn't exist`, 404);
+  res.json(country);
+});
 
 export const updateCountry = (req, res) => res.send('UPDATE single country');
 
